@@ -1,11 +1,11 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './Layout/Layout';
 import Courses from './pages/Courses';
-import NewCourse from './components/NewCourse';
-import Clases from './components/Clases';
-import NewClases from './components/NewClases';
-import Modules from './components/Modules';
-import NewModules from './components/NewModules';
+import NewCourse from './components/FormCourses';
+import Clases from './pages/Clases';
+import NewClases from './components/FormClases';
+import Modules from './pages/Modules';
+import NewModules from './components/FormModules';
 
 function App() {
   return (
