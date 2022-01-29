@@ -12,5 +12,4 @@ export const Title = (props: Props) => {
 const StyledTitle = styled.h1`
   font: var(--heading-heading1);
   color: var(--black);
-  padding-bottom: 1.5rem;
 `;

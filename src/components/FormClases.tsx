@@ -106,7 +106,7 @@ const FormClases = () => {
               <Input
                 onChange={handlerChangeInput}
                 type='text'
-                placeholder='Duración en horas'
+                placeholder='Enlace a youtube'
                 value={link}
                 name='link'
               />

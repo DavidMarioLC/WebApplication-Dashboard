@@ -11,11 +11,13 @@ import {
   Grid,
   GridItem,
   Container,
+  Toast,
 } from './index';
 
 import { useAppState } from '../context/app-context';
 import { useNavigate } from 'react-router-dom';
 import { TCourse } from '../types/types';
+import toast, { Toaster } from 'react-hot-toast';
 
 const FormCourses = () => {
   const navigate = useNavigate();
@@ -39,6 +41,15 @@ const FormCourses = () => {
   const { name, slug, duration, module, price, description } = newCourse;
 
   const saveCourse = () => {
+    if ([name, slug, duration, module, price, description].includes('')) {
+      toast.custom((t) => (
+        <Toast type='delete' title='Campos obligatorios'>
+          Debes llenar todos los campos
+        </Toast>
+      ));
+      return;
+    }
+
     const { setCourses, courses } = stateCourses;
     let uuid = Math.random();
 
@@ -50,6 +61,11 @@ const FormCourses = () => {
     setCourses([...courses, course]);
     cancelSave();
 
+    toast.custom((t) => (
+      <Toast type='success' title='Curso Agregado'>
+        {newCourse.name} fue agregado correctamente.
+      </Toast>
+    ));
     navigate('/cursos');
   };
 
@@ -161,6 +177,7 @@ const FormCourses = () => {
   };
   return (
     <>
+      <Toaster />
       <Title>Nuevo Curso</Title>
       <Container maxWidth='762px'>
         <Grid gap={32} columns={2}>
@@ -280,6 +297,7 @@ const FormCourses = () => {
             <Button variant='outline' onClick={cancelSave}>
               Cancelar
             </Button>
+
             <Button variant='solid' onClick={saveCourse}>
               Guardar
             </Button>

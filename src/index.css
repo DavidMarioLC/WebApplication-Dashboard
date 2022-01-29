@@ -9,6 +9,8 @@
   --red: #ff4a55;
   --orange: #ffb74a;
   --green: #00a389;
+  --greenOpacity: rgba(0, 163, 137, 0.5);
+  --redOpacity: rgb(255, 74, 85, 0.5);
   --linear3: linear-gradient(89deg, #6160dc 0%, #54c5eb 100%);
   --linear2: linear-gradient(90deg, #54c5eb 0%, #54c5eb 100%);
   --linear1: linear-gradient(90deg, #6160dc 0%, #6160dc 100%);

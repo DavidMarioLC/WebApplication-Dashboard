@@ -1,9 +1,9 @@
-import { ReactChild } from 'react';
+import { ReactNode } from 'react';
 import styled from 'styled-components';
 
 type Props = {
   gap?: string;
-  children: ReactChild | ReactChild[];
+  children: ReactNode | ReactNode[];
 };
 
 export const VStack = ({ children, gap }: Props) => {

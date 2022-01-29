@@ -1,8 +1,18 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { Search, Table, Title, Button, HStack, VStack } from '../components';
+import {
+  Search,
+  Table,
+  Title,
+  Button,
+  HStack,
+  VStack,
+  Empty,
+} from '../components';
+
 import { useAppState } from '../context/app-context';
 import { useSearch } from '../hooks/useSearch';
+import { Toaster } from 'react-hot-toast';
 
 const Courses = () => {
   const navigate = useNavigate();
@@ -20,6 +30,7 @@ const Courses = () => {
 
   return (
     <VStack gap='2rem'>
+      <Toaster position='top-right' />
       <Search onChange={searchOnchange} searchTerm={searchTerm} />
       <HStack justify='space-between' align='center'>
         <Title>Todos los Cursos ({courses.length})</Title>
@@ -29,7 +40,11 @@ const Courses = () => {
           </Button>
         </ActionButtons>
       </HStack>
-      <Table courses={coursesFiltered} />
+      {courses.length === 0 ? (
+        <Empty description='Empieza a agregar tu primer curso.' />
+      ) : (
+        <Table courses={coursesFiltered} />
+      )}
     </VStack>
   );
 };

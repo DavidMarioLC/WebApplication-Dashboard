@@ -2,7 +2,7 @@ import { ReactChild } from 'react';
 import styled from 'styled-components';
 
 type Props = {
-  onClick: (e: any) => void;
+  onClick?: (e: any) => void;
   children: ReactChild | ReactChild[];
   variant?: string;
 };
@@ -10,7 +10,7 @@ type Props = {
 export const Button = (props: Props) => {
   const { variant, children, onClick } = props;
   return (
-    <StyledButton onClick={(e) => onClick(e)} variant={variant}>
+    <StyledButton onClick={onClick} variant={variant}>
       {children}
     </StyledButton>
   );
