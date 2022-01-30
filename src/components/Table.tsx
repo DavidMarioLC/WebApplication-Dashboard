@@ -1,38 +1,34 @@
 import { ChangeEvent } from 'react';
 import styled from 'styled-components';
+import { Button } from './index';
 import { TCourse } from '../types/types';
 
 import Tag from './Tag';
 
+type columnType = {
+  index: string;
+  name: string;
+};
+
 interface ITableProps {
-  courses: TCourse[];
-  onChangeSelect?: (e: ChangeEvent<HTMLInputElement>, course: TCourse) => void;
+  columns: columnType[];
+  data: TCourse[];
+  selectCourse: (id: string) => void;
 }
 
-export const Table = ({ courses, onChangeSelect }: ITableProps) => {
+export const Table = ({ columns, data, selectCourse }: ITableProps) => {
   return (
     <StyledTable>
       <TableHeader>
         <TableRow>
-          <HeaderCell>
-            <TableCheckbox type='checkbox' />
-          </HeaderCell>
-          <HeaderCell>Nombre del curso</HeaderCell>
-          <HeaderCell>Slug</HeaderCell>
-          <HeaderCell>Estatus</HeaderCell>
-          <HeaderCell>Precio</HeaderCell>
-          <HeaderCell>Duración</HeaderCell>
+          {columns.map((column) => (
+            <HeaderCell key={column.index}>{column.name}</HeaderCell>
+          ))}
         </TableRow>
       </TableHeader>
       <TableBody>
-        {courses.map((course) => (
+        {data.map((course) => (
           <TableRow key={course.id}>
-            <TableCell>
-              <TableCheckbox
-                // onChange={(event) => onChangeSelect(event, course)}
-                type='checkbox'
-              />
-            </TableCell>
             <TableCell style={{ display: 'flex', gap: '1rem' }}>
               <CoursePicture src={course.image} />
               <p>{course.name}</p>
@@ -49,23 +45,16 @@ export const Table = ({ courses, onChangeSelect }: ITableProps) => {
               <Tag text={`${course.price} ${course.money}`} type='price' />
             </TableCell>
             <TableCell>{course.duration}</TableCell>
+            <TableCell>
+              <Button variant='update' onClick={() => selectCourse(course.id)}>
+                Update
+              </Button>
+              <Button variant='delete' onClick={() => selectCourse(course.id)}>
+                Delete
+              </Button>
+            </TableCell>
           </TableRow>
         ))}
-        {/* TEST */}
-        {/* <TableRow isSelected={false}>
-            <TableCell>
-              <TableCheckbox type='checkbox' />
-            </TableCell>
-            <TableCell>Logo + Curso de introducción al desarrollo web</TableCell>
-            <TableCell>desarrollo-web</TableCell>
-            <TableCell>
-              <Tag text='published' type='published' />
-            </TableCell>
-            <TableCell>
-              <Tag text='50 USD' type='price' />
-            </TableCell>
-            <TableCell>Duración</TableCell>
-          </TableRow> */}
       </TableBody>
     </StyledTable>
   );
@@ -82,10 +71,10 @@ const HeaderCell = styled.div`
   font: var(--text-text1semibold);
   font-weight: bold;
   &:first-child {
-    flex: 0;
+    flex: 2;
   }
   &:nth-child(2) {
-    flex: 2;
+    flex: 1;
   }
   &:nth-child(4) {
     /* flex: 0; */
@@ -98,7 +87,7 @@ const TableRow = styled.div<{ isSelected?: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
+
   padding: 1rem 2rem;
   border-bottom: 1px solid var(--gray3);
   border-left: ${({ isSelected }) =>
@@ -109,14 +98,15 @@ const TableCell = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
+  gap: 1rem;
   font: var(--text-text1semibold);
 
   &:first-child {
-    flex: 0;
+    flex: 2;
   }
 
   &:nth-child(2) {
-    flex: 2;
+    flex: 1;
   }
   &:nth-child(4) {
     /* flex: 0; */

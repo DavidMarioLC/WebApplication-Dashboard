@@ -8,24 +8,72 @@ import {
   HStack,
   VStack,
   Empty,
+  Modal,
 } from '../components';
 
 import { useAppState } from '../context/app-context';
 import { useSearch } from '../hooks/useSearch';
 import { Toaster } from 'react-hot-toast';
+import { useModal } from '../hooks/useModal';
+import { TCourse } from '../types/types';
+import { useState } from 'react';
 
 const Courses = () => {
   const navigate = useNavigate();
   const { stateCourses } = useAppState();
   const { searchTerm, searchOnchange } = useSearch();
-  const { courses } = stateCourses;
-
+  const { courses, setCourses } = stateCourses;
+  const { visible, changeVisibility } = useModal();
+  const [course, setCourse] = useState<TCourse>();
   const coursesFiltered = courses.filter((course) =>
     course.name.toLocaleLowerCase().includes(searchTerm)
   );
 
   const goToNewCourseForm = () => {
     navigate('/cursos/nuevo');
+  };
+
+  const columns = [
+    {
+      index: '1',
+      name: 'Nombre del curso',
+    },
+    {
+      index: '2',
+      name: 'Slug',
+    },
+    {
+      index: '3',
+      name: 'Estatus',
+    },
+    {
+      index: '4',
+      name: 'Precio',
+    },
+    {
+      index: '5',
+      name: 'Duración',
+    },
+    {
+      index: '6',
+      name: 'Acciones',
+    },
+  ];
+
+  const selectCourse = (id: string) => {
+    const course = courses.find((course) => course.id === id);
+    setCourse(course);
+    changeVisibility();
+  };
+
+  const deleteCourse = () => {
+    const newListCourses = courses.filter((item) => item.id !== course?.id);
+    setCourses(newListCourses);
+    changeVisibility();
+  };
+
+  const updateCourse = () => {
+    // console.log(id);
   };
 
   return (
@@ -43,8 +91,19 @@ const Courses = () => {
       {courses.length === 0 ? (
         <Empty description='Empieza a agregar tu primer curso.' />
       ) : (
-        <Table courses={coursesFiltered} />
+        <Table
+          data={coursesFiltered}
+          columns={columns}
+          selectCourse={selectCourse}
+        />
       )}
+      <Modal
+        visible={visible}
+        title='¿Deseas eliminar el curso seleccionado?'
+        data={course}
+        changeVisibility={changeVisibility}
+        deleteCourse={deleteCourse}
+      />
     </VStack>
   );
 };

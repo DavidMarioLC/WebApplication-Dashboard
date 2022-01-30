@@ -18,12 +18,11 @@ import { useAppState } from '../context/app-context';
 import { useNavigate } from 'react-router-dom';
 import { TCourse } from '../types/types';
 import toast, { Toaster } from 'react-hot-toast';
+import { usePreview } from '../hooks/usePreview';
 
 const FormCourses = () => {
   const navigate = useNavigate();
   const { stateCourses } = useAppState();
-  const fileRef = useRef<HTMLInputElement>(null);
-
   const [newCourse, setNewCourse] = useState<TCourse>({
     id: '',
     name: '',
@@ -38,12 +37,20 @@ const FormCourses = () => {
     description: '',
   });
 
+  const {
+    previewImage,
+    fileRef,
+    handleOnclickUpload,
+    handlerChangeFile,
+    resetPreview,
+  } = usePreview();
+
   const { name, slug, duration, module, price, description } = newCourse;
 
   const saveCourse = () => {
     if ([name, slug, duration, module, price, description].includes('')) {
       toast.custom((t) => (
-        <Toast type='delete' title='Campos obligatorios'>
+        <Toast type='error' title='Campos obligatorios'>
           Debes llenar todos los campos
         </Toast>
       ));
@@ -56,6 +63,7 @@ const FormCourses = () => {
     const course: TCourse = {
       ...newCourse,
       id: uuid.toString(),
+      image: previewImage.urlImage,
     };
 
     setCourses([...courses, course]);
@@ -84,38 +92,8 @@ const FormCourses = () => {
       description: '',
     });
 
-    SetPreviewImage({
-      nameImage: '',
-      urlImage: '',
-    });
-  };
-
-  const [previewImage, SetPreviewImage] = useState({
-    nameImage: '',
-    urlImage: '',
-  });
-
-  const handleOnclickUpload = () => {
-    if (!fileRef.current) return;
-    fileRef.current.click();
-  };
-
-  const handlerChangeFile = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files!['0'];
-    const nameImage = file.name;
-    const urlImage = URL.createObjectURL(file);
-    console.log(file);
-    localStorage.setItem('img', urlImage);
-    SetPreviewImage({
-      ...previewImage,
-      nameImage,
-      urlImage,
-    });
-
-    setNewCourse({
-      ...newCourse,
-      image: urlImage,
-    });
+    //reset preview
+    resetPreview();
   };
 
   const teacherOptions = [

@@ -40,12 +40,20 @@ const StyledButton = styled(ButtonDefault)<{ variant?: string }>`
       ? `var(--white)`
       : variant === 'disabled'
       ? `var(--white)`
-      : `var(--black)`};
+      : variant === 'delete'
+      ? `var(--white)`
+      : variant === 'update'
+      ? 'var(--white)'
+      : ''};
   background: ${({ variant }) =>
     variant === 'solid'
       ? ' var(--black)'
       : variant === 'disabled'
       ? 'var(--gray3)'
+      : variant === 'delete'
+      ? 'var(--red)'
+      : variant === 'update'
+      ? 'var(--primary)'
       : ''};
 
   cursor: ${({ variant }) => (variant === 'disabled' ? `not-allowed` : '')};
