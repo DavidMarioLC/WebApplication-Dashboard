@@ -7,8 +7,8 @@ import { TCourse } from '../types/types';
 type Props = {
   visible: boolean;
   title?: string;
-  data: TCourse | undefined;
-  changeVisibility: () => void;
+  data?: TCourse;
+  cancelDeleteCourse: () => void;
   deleteCourse: () => void;
 };
 
@@ -16,7 +16,7 @@ export const Modal = ({
   visible,
   title,
   data,
-  changeVisibility,
+  cancelDeleteCourse,
   deleteCourse,
 }: Props) => {
   const portalNode = document.createElement('div');
@@ -34,14 +34,14 @@ export const Modal = ({
         <ModalContent>
           <h2>{title}</h2>
           <ModalDescription>
-            <img src={data?.image} alt='' />
+            <ModalImage src={data?.image.urlImage} alt='' />
             <p>{data?.name}</p>
           </ModalDescription>
           <ModalActions>
             <Button variant='outline' onClick={deleteCourse}>
               Eliminar
             </Button>
-            <Button onClick={changeVisibility} variant='solid'>
+            <Button onClick={cancelDeleteCourse} variant='solid'>
               Cancelar
             </Button>
           </ModalActions>
@@ -83,4 +83,10 @@ const ModalActions = styled.div`
   display: flex;
   justify-content: center;
   gap: 0.5rem;
+`;
+
+const ModalImage = styled.img`
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
 `;

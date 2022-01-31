@@ -1,5 +1,10 @@
 import { Dispatch, SetStateAction } from 'react';
 
+export type TPreview = {
+  nameImage: string;
+  urlImage: string;
+};
+
 export type TCourse = {
   id: string;
   name: string;
@@ -10,19 +15,21 @@ export type TCourse = {
   module: string;
   price: string;
   money: string;
-  image: string;
+  image: TPreview;
   description: string;
 };
 
 export type TClase = {
+  id: string;
   name: string;
   slug: string;
-  module: string;
+  path: string;
   link: string;
   description: string;
 };
 
 export type TModule = {
+  id: string;
   title: string;
   slug: string;
   mod: string;
@@ -33,13 +40,19 @@ export type TypeAppContext = {
   stateCourses: {
     courses: TCourse[];
     setCourses: Dispatch<SetStateAction<TCourse[]>>;
+    course: TCourse;
+    setCourse: Dispatch<SetStateAction<TCourse>>;
   };
   stateClases: {
     clases: TClase[];
     setClases: Dispatch<SetStateAction<TClase[]>>;
+    clase: TClase;
+    setClase: Dispatch<SetStateAction<TClase>>;
   };
   stateModules: {
     modules: TModule[];
     setModules: Dispatch<SetStateAction<TModule[]>>;
+    module: TModule;
+    setModule: Dispatch<SetStateAction<TModule>>;
   };
 };

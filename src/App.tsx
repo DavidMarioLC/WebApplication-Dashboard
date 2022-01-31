@@ -6,6 +6,7 @@ import Clases from './pages/Clases';
 import NewClases from './components/FormClases';
 import Modules from './pages/Modules';
 import NewModules from './components/FormModules';
+import EditCourse from './components/EditCourse';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path='/' element={<Navigate to='/cursos' replace />} />
         <Route path='cursos' element={<Courses />} />
         <Route path='cursos/nuevo' element={<NewCourse />} />
+        <Route path='cursos/edit' element={<EditCourse />} />
         <Route path='clases' element={<Clases />} />
         <Route path='clases/nuevo' element={<NewClases />} />
         <Route path='modulos' element={<Modules />} />

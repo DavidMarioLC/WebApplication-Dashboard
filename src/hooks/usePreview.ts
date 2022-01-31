@@ -1,10 +1,8 @@
 import { useState, useRef, ChangeEvent } from 'react';
+import { TPreview } from '../types/types';
 
-export const usePreview = () => {
-  const [previewImage, SetPreviewImage] = useState({
-    nameImage: '',
-    urlImage: '',
-  });
+export const usePreview = (image: TPreview) => {
+  const [previewImage, SetPreviewImage] = useState<TPreview>(image);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const handleOnclickUpload = () => {
@@ -17,8 +15,8 @@ export const usePreview = () => {
     const nameImage = file.name;
     const urlImage = URL.createObjectURL(file);
     localStorage.setItem('img', urlImage);
+
     SetPreviewImage({
-      ...previewImage,
       nameImage,
       urlImage,
     });
@@ -37,5 +35,6 @@ export const usePreview = () => {
     handleOnclickUpload,
     handlerChangeFile,
     resetPreview,
+    SetPreviewImage,
   };
 };

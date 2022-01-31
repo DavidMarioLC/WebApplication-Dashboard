@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { IoIosArrowDown } from 'react-icons/io';
 
@@ -29,6 +29,10 @@ export const Select = ({
     setItemSelect(option);
     handlerChangeOption(option);
   };
+
+  useEffect(() => {
+    setItemSelect(defaultSelect);
+  }, [defaultSelect]);
 
   return (
     <StyledSelect onClick={showMenu}>

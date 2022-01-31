@@ -19,9 +19,10 @@ const FormClases = () => {
   const navigate = useNavigate();
   const { clases, setClases } = stateClases;
   const [clase, setClase] = useState<TClase>({
+    id: '',
     name: '',
     slug: '',
-    module: '',
+    path: '',
     link: '',
     description: '',
   });
@@ -43,21 +44,30 @@ const FormClases = () => {
   };
 
   const saveClase = () => {
-    setClases([...clases, clase]);
+    const uuid = Math.random();
+
+    setClases([
+      ...clases,
+      {
+        ...clase,
+        id: uuid.toString(),
+      },
+    ]);
     resetClaseForm();
     navigate('/clases');
   };
 
   const resetClaseForm = () => {
     setClase({
+      id: '',
       name: '',
       slug: '',
-      module: '',
+      path: '',
       link: '',
       description: '',
     });
   };
-  const { name, slug, module, link, description } = clase;
+  const { name, slug, path, link, description } = clase;
   return (
     <>
       <Title>Nueva Clase</Title>
@@ -89,13 +99,13 @@ const FormClases = () => {
           </GridItem>
           <GridItem fillColumn={1}>
             <FormControl>
-              <Label>Modulo</Label>
+              <Label>Lesson Path</Label>
               <Input
                 onChange={handlerChangeInput}
                 type='text'
                 placeholder='Desarrollo Web'
-                value={module}
-                name='module'
+                value={path}
+                name='path'
               />
             </FormControl>
           </GridItem>

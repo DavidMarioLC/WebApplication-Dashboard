@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   Title,
   Input,
@@ -20,35 +19,23 @@ import { TCourse } from '../types/types';
 import toast, { Toaster } from 'react-hot-toast';
 import { usePreview } from '../hooks/usePreview';
 
-const FormCourses = () => {
+const EditCourse = () => {
   const navigate = useNavigate();
   const { stateCourses } = useAppState();
-  const [newCourse, setNewCourse] = useState<TCourse>({
-    id: '',
-    name: '',
-    slug: '',
-    status: '',
-    teacher: '',
-    duration: '',
-    module: '',
-    price: '',
-    money: '',
-    image: {
-      nameImage: '',
-      urlImage: '',
-    },
-    description: '',
-  });
-
+  const { setCourses, courses, course, setCourse } = stateCourses;
   const {
-    previewImage,
-    fileRef,
-    handleOnclickUpload,
-    handlerChangeFile,
-    resetPreview,
-  } = usePreview({ nameImage: '', urlImage: '' });
-
-  const { name, slug, duration, module, price, description } = newCourse;
+    name,
+    slug,
+    duration,
+    module,
+    price,
+    description,
+    status,
+    teacher,
+    image,
+  } = course;
+  const { previewImage, fileRef, handleOnclickUpload, handlerChangeFile } =
+    usePreview(image);
 
   const saveCourse = () => {
     if ([name, slug, duration, module, price, description].includes('')) {
@@ -60,49 +47,31 @@ const FormCourses = () => {
       return;
     }
 
-    const { setCourses, courses } = stateCourses;
-    let uuid = Math.random();
+    const newListCourse: TCourse[] = courses.map((c) => {
+      if (c.id === course.id) {
+        return {
+          ...course,
+          image: {
+            nameImage: previewImage.nameImage,
+            urlImage: previewImage.urlImage,
+          },
+        };
+      }
+      return c;
+    });
 
-    const course: TCourse = {
-      ...newCourse,
-      id: uuid.toString(),
-      image: {
-        nameImage: previewImage.nameImage,
-        urlImage: previewImage.urlImage,
-      },
-    };
-
-    setCourses([...courses, course]);
-    cancelSave();
+    setCourses(newListCourse);
 
     toast.custom((t) => (
-      <Toast type='success' title='Curso Agregado'>
-        {newCourse.name} fue agregado correctamente.
+      <Toast type='success' title='Curso Actualizado'>
+        {course.name} fue actualizado correctamente.
       </Toast>
     ));
     navigate('/cursos');
   };
 
   const cancelSave = () => {
-    setNewCourse({
-      id: '',
-      name: '',
-      slug: '',
-      status: '',
-      teacher: '',
-      duration: '',
-      module: '',
-      price: '',
-      money: '',
-      image: {
-        nameImage: '',
-        urlImage: '',
-      },
-      description: '',
-    });
-
-    //reset preview
-    resetPreview();
+    navigate('/cursos');
   };
 
   const teacherOptions = [
@@ -127,29 +96,29 @@ const FormCourses = () => {
   ];
 
   const handlerChangeTeacher = (option: string) => {
-    setNewCourse({
-      ...newCourse,
+    setCourse({
+      ...course,
       teacher: option,
     });
   };
 
   const handlerChangeChangeStatus = (option: string) => {
-    setNewCourse({
-      ...newCourse,
+    setCourse({
+      ...course,
       status: option,
     });
   };
 
   const handlerChangeMoney = (option: string) => {
-    setNewCourse({
-      ...newCourse,
+    setCourse({
+      ...course,
       money: option,
     });
   };
 
   const handlerChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNewCourse({
-      ...newCourse,
+    setCourse({
+      ...course,
       [event.target.name]: event.target.value,
     });
   };
@@ -157,15 +126,15 @@ const FormCourses = () => {
   const handlerChangeDescription = (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
-    setNewCourse({
-      ...newCourse,
+    setCourse({
+      ...course,
       description: event.target.value,
     });
   };
   return (
     <>
       <Toaster position='top-right' />
-      <Title>Nuevo Curso</Title>
+      <Title>Editando Curso</Title>
       <Container maxWidth='762px'>
         <Grid gap={32} columns={2}>
           <GridItem fillColumn={1}>
@@ -196,7 +165,7 @@ const FormCourses = () => {
             <FormControl>
               <Label>Estatus</Label>
               <Select
-                defaultSelect='Selecciona el status'
+                defaultSelect={status}
                 options={statusOptions}
                 handlerChangeOption={handlerChangeChangeStatus}
               />
@@ -206,7 +175,7 @@ const FormCourses = () => {
             <FormControl>
               <Label>Profesor</Label>
               <Select
-                defaultSelect='Selecciona el profesor'
+                defaultSelect={teacher}
                 options={teacherOptions}
                 handlerChangeOption={handlerChangeTeacher}
               />
@@ -262,7 +231,7 @@ const FormCourses = () => {
             <Button variant='outline' onClick={handleOnclickUpload}>
               Agregar Imagen
             </Button>
-            <Preview image={previewImage} />
+            <Preview image={previewImage || image} />
             <input
               onChange={handlerChangeFile}
               ref={fileRef}
@@ -294,4 +263,4 @@ const FormCourses = () => {
     </>
   );
 };
-export default FormCourses;
+export default EditCourse;

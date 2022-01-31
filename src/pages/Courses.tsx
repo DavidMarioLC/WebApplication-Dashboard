@@ -16,18 +16,66 @@ import { useSearch } from '../hooks/useSearch';
 import { Toaster } from 'react-hot-toast';
 import { useModal } from '../hooks/useModal';
 import { TCourse } from '../types/types';
-import { useState } from 'react';
 
 const Courses = () => {
   const navigate = useNavigate();
-  const { stateCourses } = useAppState();
   const { searchTerm, searchOnchange } = useSearch();
-  const { courses, setCourses } = stateCourses;
   const { visible, changeVisibility } = useModal();
-  const [course, setCourse] = useState<TCourse>();
+  const { stateCourses } = useAppState();
+  const { courses, setCourses, course, setCourse } = stateCourses;
+
   const coursesFiltered = courses.filter((course) =>
     course.name.toLocaleLowerCase().includes(searchTerm)
   );
+
+  const selectEditCourse = (id: string) => {
+    const course = courses.find((course: TCourse) => course.id === id);
+    if (course) {
+      setCourse(course);
+      goToEditCourseForm();
+    }
+  };
+
+  const selectDeleteCourse = (id: string) => {
+    const course = courses.find((course: TCourse) => course.id === id);
+    if (course) {
+      setCourse(course);
+      changeVisibility();
+    }
+  };
+
+  const deleteCourse = () => {
+    const newListCourses = courses.filter((item) => item.id !== course?.id);
+    setCourses(newListCourses);
+    changeVisibility();
+  };
+
+  const cancelDeleteCourse = () => {
+    changeVisibility();
+    setCourse({
+      id: '',
+      name: '',
+      slug: '',
+      status: '',
+      teacher: '',
+      duration: '',
+      module: '',
+      price: '',
+      money: '',
+      image: {
+        nameImage: '',
+        urlImage: '',
+      },
+      description: '',
+    });
+  };
+
+  /**
+   * redirect and columns
+   */
+  const goToEditCourseForm = () => {
+    navigate('/cursos/edit');
+  };
 
   const goToNewCourseForm = () => {
     navigate('/cursos/nuevo');
@@ -60,22 +108,6 @@ const Courses = () => {
     },
   ];
 
-  const selectCourse = (id: string) => {
-    const course = courses.find((course) => course.id === id);
-    setCourse(course);
-    changeVisibility();
-  };
-
-  const deleteCourse = () => {
-    const newListCourses = courses.filter((item) => item.id !== course?.id);
-    setCourses(newListCourses);
-    changeVisibility();
-  };
-
-  const updateCourse = () => {
-    // console.log(id);
-  };
-
   return (
     <VStack gap='2rem'>
       <Toaster position='top-right' />
@@ -94,14 +126,15 @@ const Courses = () => {
         <Table
           data={coursesFiltered}
           columns={columns}
-          selectCourse={selectCourse}
+          selectEditCourse={selectEditCourse}
+          selectDeleteCourse={selectDeleteCourse}
         />
       )}
       <Modal
         visible={visible}
         title='¿Deseas eliminar el curso seleccionado?'
         data={course}
-        changeVisibility={changeVisibility}
+        cancelDeleteCourse={cancelDeleteCourse}
         deleteCourse={deleteCourse}
       />
     </VStack>

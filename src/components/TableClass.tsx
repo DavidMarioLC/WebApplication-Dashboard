@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 import { Button } from './index';
-import { TCourse } from '../types/types';
-
-import Tag from './Tag';
+import { TClase } from '../types/types';
 
 type columnType = {
   index: string;
@@ -11,12 +9,12 @@ type columnType = {
 
 interface ITableProps {
   columns: columnType[];
-  data: TCourse[];
+  data: TClase[];
   selectEditCourse: (id: string) => void;
   selectDeleteCourse: (id: string) => void;
 }
 
-export const Table = ({
+export const TableClass = ({
   columns,
   data,
   selectEditCourse,
@@ -32,35 +30,16 @@ export const Table = ({
         </TableRow>
       </TableHeader>
       <TableBody>
-        {data.map((course) => (
-          <TableRow key={course.id}>
-            <TableCell style={{ display: 'flex', gap: '1rem' }}>
-              <CoursePicture src={course.image.urlImage} />
-              <p>{course.name}</p>
-            </TableCell>
-            <TableCell>{course.slug}</TableCell>
+        {data.map((c) => (
+          <TableRow key={c.id}>
+            <TableCell>{c.name}</TableCell>
+            <TableCell>{c.slug}</TableCell>
+            <TableCell>{c.path}</TableCell>
             <TableCell>
-              <Tag
-                text={course.status}
-                type={course.status.toLocaleLowerCase()}
-              />
-            </TableCell>
-
-            <TableCell>
-              <Tag text={`${course.price} ${course.money}`} type='price' />
-            </TableCell>
-            <TableCell>{course.duration}</TableCell>
-            <TableCell>
-              <Button
-                variant='update'
-                onClick={() => selectEditCourse(course.id)}
-              >
+              <Button variant='update' onClick={() => selectEditCourse(c.id)}>
                 Update
               </Button>
-              <Button
-                variant='delete'
-                onClick={() => selectDeleteCourse(course.id)}
-              >
+              <Button variant='delete' onClick={() => selectDeleteCourse(c.id)}>
                 Delete
               </Button>
             </TableCell>

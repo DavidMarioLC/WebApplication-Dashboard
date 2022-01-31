@@ -10,8 +10,7 @@ type Props = {
   image: TPreview;
 };
 
-export const Preview = (props: Props) => {
-  const { image } = props;
+export const Preview = ({ image }: Props) => {
   if (!image.urlImage) return null;
   return (
     <StyledPreview>

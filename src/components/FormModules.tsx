@@ -18,6 +18,7 @@ const FormModules = () => {
   const navigate = useNavigate();
   const { modules, setModules } = stateModules;
   const [module, setModule] = useState<TModule>({
+    id: '',
     title: '',
     slug: '',
     mod: '',
@@ -39,6 +40,7 @@ const FormModules = () => {
 
   const resetModuleForm = () => {
     setModule({
+      id: '',
       title: '',
       slug: '',
       mod: '',
