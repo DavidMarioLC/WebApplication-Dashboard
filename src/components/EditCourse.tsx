@@ -68,6 +68,22 @@ const EditCourse = () => {
       </Toast>
     ));
     navigate('/cursos');
+    setCourse({
+      id: '',
+      name: '',
+      slug: '',
+      status: '',
+      teacher: '',
+      duration: '',
+      module: '',
+      price: '',
+      money: '',
+      image: {
+        nameImage: '',
+        urlImage: '',
+      },
+      description: '',
+    });
   };
 
   const cancelSave = () => {
@@ -133,7 +149,6 @@ const EditCourse = () => {
   };
   return (
     <>
-      <Toaster position='top-right' />
       <Title>Editando Curso</Title>
       <Container maxWidth='762px'>
         <Grid gap={32} columns={2}>
@@ -255,7 +270,7 @@ const EditCourse = () => {
             </Button>
 
             <Button variant='solid' onClick={saveCourse}>
-              Guardar
+              Actualizar curso
             </Button>
           </GridItem>
         </Grid>

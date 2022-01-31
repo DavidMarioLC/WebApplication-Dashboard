@@ -2,10 +2,11 @@ import { NavLink, Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 import { FiBook, FiMonitor, FiBox, BsBoxArrowLeft } from '../Icons';
 import { AppProvider } from '../context/app-context';
-
+import { Toaster } from 'react-hot-toast';
 const Layout = () => {
   return (
     <AppProvider>
+      <Toaster position='top-right' />
       <StyledRoot>
         <nav className='navigation'>
           <div className='logo-wrapper'>

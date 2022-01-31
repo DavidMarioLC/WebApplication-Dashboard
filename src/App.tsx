@@ -7,6 +7,8 @@ import NewClases from './components/FormClases';
 import Modules from './pages/Modules';
 import NewModules from './components/FormModules';
 import EditCourse from './components/EditCourse';
+import EditClase from './components/EditClase';
+import EditModule from './components/EditModule';
 
 function App() {
   return (
@@ -18,8 +20,10 @@ function App() {
         <Route path='cursos/edit' element={<EditCourse />} />
         <Route path='clases' element={<Clases />} />
         <Route path='clases/nuevo' element={<NewClases />} />
+        <Route path='clases/edit' element={<EditClase />} />
         <Route path='modulos' element={<Modules />} />
         <Route path='modulos/nuevo' element={<NewModules />} />
+        <Route path='modulos/edit' element={<EditModule />} />
       </Route>
     </Routes>
   );

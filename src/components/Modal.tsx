@@ -1,24 +1,13 @@
 import { createPortal } from 'react-dom';
 import { useEffect } from 'react';
 import styled from 'styled-components';
-import { Button } from '.';
-import { TCourse } from '../types/types';
 
 type Props = {
   visible: boolean;
-  title?: string;
-  data?: TCourse;
-  cancelDeleteCourse: () => void;
-  deleteCourse: () => void;
+  children: React.ReactNode | React.ReactNode[];
 };
 
-export const Modal = ({
-  visible,
-  title,
-  data,
-  cancelDeleteCourse,
-  deleteCourse,
-}: Props) => {
+export const Modal = ({ children, visible }: Props) => {
   const portalNode = document.createElement('div');
 
   useEffect(() => {
@@ -29,30 +18,12 @@ export const Modal = ({
   }, [portalNode]);
 
   return createPortal(
-    visible && (
-      <StyledOverlay>
-        <ModalContent>
-          <h2>{title}</h2>
-          <ModalDescription>
-            <ModalImage src={data?.image.urlImage} alt='' />
-            <p>{data?.name}</p>
-          </ModalDescription>
-          <ModalActions>
-            <Button variant='outline' onClick={deleteCourse}>
-              Eliminar
-            </Button>
-            <Button onClick={cancelDeleteCourse} variant='solid'>
-              Cancelar
-            </Button>
-          </ModalActions>
-        </ModalContent>
-      </StyledOverlay>
-    ),
+    visible && <StyledOverlay>{children}</StyledOverlay>,
     portalNode
   );
 };
 
-const StyledOverlay = styled.div`
+export const StyledOverlay = styled.div`
   padding: 1rem;
   position: fixed;
   inset: 0;
@@ -62,7 +33,7 @@ const StyledOverlay = styled.div`
   align-items: center;
 `;
 
-const ModalContent = styled.div`
+export const ModalContent = styled.div`
   background: var(--white);
   padding: 2.5rem;
   border-radius: 1rem;
@@ -72,21 +43,25 @@ const ModalContent = styled.div`
   gap: 3rem;
 `;
 
-const ModalDescription = styled.div`
+export const ModalDescription = styled.div`
   display: flex;
   gap: 0.5rem;
   align-items: center;
   justify-content: center;
 `;
 
-const ModalActions = styled.div`
+export const ModalActions = styled.div`
   display: flex;
   justify-content: center;
   gap: 0.5rem;
 `;
 
-const ModalImage = styled.img`
+export const ModalImage = styled.img`
   width: 50px;
   height: 50px;
   object-fit: cover;
 `;
+
+export const ModalTitle = styled.h2``;
+
+export const ModalText = styled.p``;

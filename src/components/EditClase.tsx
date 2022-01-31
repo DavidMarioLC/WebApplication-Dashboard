@@ -3,7 +3,6 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { useAppState } from '../context/app-context';
 import { TClase } from '../types/types';
-import { fieldsIsEmpty } from '../utils/validateFields';
 import {
   Button,
   Input,
@@ -17,18 +16,10 @@ import {
   Toast,
 } from './index';
 
-const FormClases = () => {
+const EditClase = () => {
   const { stateClases } = useAppState();
   const navigate = useNavigate();
-  const { clases, setClases } = stateClases;
-  const [clase, setClase] = useState<TClase>({
-    id: '',
-    name: '',
-    slug: '',
-    path: '',
-    link: '',
-    description: '',
-  });
+  const { clases, setClases, setClase, clase } = stateClases;
 
   const handlerChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setClase({
@@ -47,32 +38,31 @@ const FormClases = () => {
   };
 
   const saveClase = () => {
-    if (fieldsIsEmpty(name, slug, path, link, description)) {
-      toast.custom((t) => (
-        <Toast type='error' title='Campos obligatorios'>
-          Debes llenar todos los campos
-        </Toast>
-      ));
-      return;
-    }
-
-    const uuid = Math.random();
-
-    setClases([
-      ...clases,
-      {
-        ...clase,
-        id: uuid.toString(),
-      },
-    ]);
+    const newListClases = clases.map((c) => {
+      if (c.id === clase.id) {
+        return {
+          ...clase,
+        };
+      } else {
+        return c;
+      }
+    });
+    setClases(newListClases);
     resetClaseForm();
-
     navigate('/clases');
     toast.custom((t) => (
-      <Toast type='success' title='Clase agregada'>
-        {clase.name} fue agregada correctamente.
+      <Toast type='success' title='Clase actualizada'>
+        {clase.name} fue actualizada correctamente.
       </Toast>
     ));
+    setClase({
+      id: '',
+      name: '',
+      slug: '',
+      path: '',
+      link: '',
+      description: '',
+    });
   };
 
   const resetClaseForm = () => {
@@ -84,11 +74,13 @@ const FormClases = () => {
       link: '',
       description: '',
     });
+    navigate('/clases');
   };
+
   const { name, slug, path, link, description } = clase;
   return (
     <>
-      <Title>Nueva Clase</Title>
+      <Title>Editando Clase</Title>
       <Container maxWidth='762px'>
         <Grid gap={32} columns={2}>
           <GridItem fillColumn={1}>
@@ -154,7 +146,7 @@ const FormClases = () => {
               Cancelar
             </Button>
             <Button variant='solid' onClick={saveClase}>
-              Guardar
+              Actualizar clase
             </Button>
           </GridItem>
         </Grid>
@@ -163,4 +155,4 @@ const FormClases = () => {
   );
 };
 
-export default FormClases;
+export default EditClase;

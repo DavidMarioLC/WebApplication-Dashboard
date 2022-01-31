@@ -1,8 +1,7 @@
-import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { useAppState } from '../context/app-context';
-import { TModule } from '../types/types';
+
 import { fieldsIsEmpty } from '../utils/validateFields';
 import {
   Button,
@@ -16,17 +15,10 @@ import {
   Toast,
 } from './index';
 
-const FormModules = () => {
+const EditModule = () => {
   const { stateModules } = useAppState();
   const navigate = useNavigate();
-  const { modules, setModules } = stateModules;
-  const [module, setModule] = useState<TModule>({
-    id: '',
-    title: '',
-    slug: '',
-    mod: '',
-    orden: '',
-  });
+  const { modules, setModules, module, setModule } = stateModules;
 
   const handlerChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setModule({
@@ -44,18 +36,19 @@ const FormModules = () => {
       ));
       return;
     }
-    setModules([
-      ...modules,
-      {
-        ...module,
-        id: Math.random().toString(),
-      },
-    ]);
+    const newListModules = modules.map((m) => {
+      if (m.id === module.id) {
+        return module;
+      } else {
+        return m;
+      }
+    });
+    setModules(newListModules);
     resetModuleForm();
     navigate('/modulos');
     toast.custom((t) => (
-      <Toast type='success' title='Modulo agregado'>
-        {module.title} fue agregado correctamente.
+      <Toast type='success' title='Modulo actualizado'>
+        {module.title} fue actualizado correctamente.
       </Toast>
     ));
   };
@@ -73,7 +66,7 @@ const FormModules = () => {
   const { title, slug, mod, orden } = module;
   return (
     <>
-      <Title>Nuevo Modulo</Title>
+      <Title>Actualizando Modulo</Title>
       <Container maxWidth='762px'>
         <Grid gap={32} columns={2}>
           <GridItem fillColumn={1}>
@@ -130,7 +123,7 @@ const FormModules = () => {
               Cancelar
             </Button>
             <Button variant='solid' onClick={saveModule}>
-              Guardar
+              Actualizar modulo
             </Button>
           </GridItem>
         </Grid>
@@ -139,4 +132,4 @@ const FormModules = () => {
   );
 };
 
-export default FormModules;
+export default EditModule;

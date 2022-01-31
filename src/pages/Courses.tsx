@@ -9,13 +9,27 @@ import {
   VStack,
   Empty,
   Modal,
+  ModalContent,
+  ModalDescription,
+  ModalImage,
+  ModalActions,
+  ModalTitle,
+  ModalText,
+  Toast,
+  TableHeader,
+  TableRow,
+  TableHeaderCell,
+  TableBody,
+  TableCell,
+  CoursePicture,
 } from '../components';
 
 import { useAppState } from '../context/app-context';
 import { useSearch } from '../hooks/useSearch';
-import { Toaster } from 'react-hot-toast';
 import { useModal } from '../hooks/useModal';
 import { TCourse } from '../types/types';
+import toast from 'react-hot-toast';
+import Tag from '../components/Tag';
 
 const Courses = () => {
   const navigate = useNavigate();
@@ -48,6 +62,28 @@ const Courses = () => {
     const newListCourses = courses.filter((item) => item.id !== course?.id);
     setCourses(newListCourses);
     changeVisibility();
+    toast.custom((t) => (
+      <Toast type='success' title='Curso elmininado'>
+        El curso ha sido eliminado exitosamente.
+      </Toast>
+    ));
+
+    setCourse({
+      id: '',
+      name: '',
+      slug: '',
+      status: '',
+      teacher: '',
+      duration: '',
+      module: '',
+      price: '',
+      money: '',
+      image: {
+        nameImage: '',
+        urlImage: '',
+      },
+      description: '',
+    });
   };
 
   const cancelDeleteCourse = () => {
@@ -110,7 +146,6 @@ const Courses = () => {
 
   return (
     <VStack gap='2rem'>
-      <Toaster position='top-right' />
       <Search onChange={searchOnchange} searchTerm={searchTerm} />
       <HStack justify='space-between' align='center'>
         <Title>Todos los Cursos ({courses.length})</Title>
@@ -123,20 +158,71 @@ const Courses = () => {
       {courses.length === 0 ? (
         <Empty description='Empieza a agregar tu primer curso.' />
       ) : (
-        <Table
-          data={coursesFiltered}
-          columns={columns}
-          selectEditCourse={selectEditCourse}
-          selectDeleteCourse={selectDeleteCourse}
-        />
+        <Table>
+          <TableHeader>
+            <TableRow>
+              {columns.map((column) => (
+                <TableHeaderCell key={column.index}>
+                  {column.name}
+                </TableHeaderCell>
+              ))}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {coursesFiltered.map((course) => (
+              <TableRow key={course.id}>
+                <TableCell style={{ display: 'flex', gap: '1rem' }}>
+                  <CoursePicture src={course.image.urlImage} />
+                  <p>{course.name}</p>
+                </TableCell>
+                <TableCell>{course.slug}</TableCell>
+                <TableCell>
+                  <Tag
+                    text={course.status}
+                    type={course.status.toLocaleLowerCase()}
+                  />
+                </TableCell>
+
+                <TableCell>
+                  <Tag text={`${course.price} ${course.money}`} type='price' />
+                </TableCell>
+                <TableCell>{course.duration}</TableCell>
+                <TableCell>
+                  <Button
+                    variant='update'
+                    onClick={() => selectEditCourse(course.id)}
+                  >
+                    Update
+                  </Button>
+                  <Button
+                    variant='delete'
+                    onClick={() => selectDeleteCourse(course.id)}
+                  >
+                    Delete
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       )}
-      <Modal
-        visible={visible}
-        title='¿Deseas eliminar el curso seleccionado?'
-        data={course}
-        cancelDeleteCourse={cancelDeleteCourse}
-        deleteCourse={deleteCourse}
-      />
+      <Modal visible={visible}>
+        <ModalContent>
+          <ModalTitle>Deseas eliminar el curso seleccionado?</ModalTitle>
+          <ModalDescription>
+            <ModalImage src={course.image.urlImage} alt='' />
+            <ModalText>{course.name}</ModalText>
+          </ModalDescription>
+          <ModalActions>
+            <Button variant='outline' onClick={deleteCourse}>
+              Eliminar
+            </Button>
+            <Button onClick={cancelDeleteCourse} variant='solid'>
+              Cancelar
+            </Button>
+          </ModalActions>
+        </ModalContent>
+      </Modal>
     </VStack>
   );
 };

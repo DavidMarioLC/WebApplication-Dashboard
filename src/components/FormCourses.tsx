@@ -19,7 +19,7 @@ import { useNavigate } from 'react-router-dom';
 import { TCourse } from '../types/types';
 import toast, { Toaster } from 'react-hot-toast';
 import { usePreview } from '../hooks/usePreview';
-
+import { fieldsIsEmpty } from '../utils/validateFields';
 const FormCourses = () => {
   const navigate = useNavigate();
   const { stateCourses } = useAppState();
@@ -51,7 +51,7 @@ const FormCourses = () => {
   const { name, slug, duration, module, price, description } = newCourse;
 
   const saveCourse = () => {
-    if ([name, slug, duration, module, price, description].includes('')) {
+    if (fieldsIsEmpty(name, slug, duration, module, price, description)) {
       toast.custom((t) => (
         <Toast type='error' title='Campos obligatorios'>
           Debes llenar todos los campos
@@ -164,7 +164,6 @@ const FormCourses = () => {
   };
   return (
     <>
-      <Toaster position='top-right' />
       <Title>Nuevo Curso</Title>
       <Container maxWidth='762px'>
         <Grid gap={32} columns={2}>
@@ -241,7 +240,7 @@ const FormCourses = () => {
               <Label>Precio</Label>
               <Input
                 onChange={handlerChangeInput}
-                type='text'
+                type='number'
                 placeholder='Precio'
                 value={price}
                 name='price'
