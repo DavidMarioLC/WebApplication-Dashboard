@@ -13,9 +13,10 @@ const Layout = () => {
             <img
               className='logo'
               src={process.env.PUBLIC_URL + 'logo.svg'}
-              alt=''
+              alt='logo LeonidasEsteban'
               height='48'
               width='48'
+              title='logo LeonidasEsteban'
             />
             <h1 className='logo-name'>LeonidasEsteban</h1>
           </div>
@@ -66,11 +67,10 @@ const Layout = () => {
               <img
                 className='user-img'
                 src={process.env.PUBLIC_URL + 'avatar.png'}
-                // alt='Logo de Leonidas Esteban'
-                // title='Logo de Leonidas Esteban'
+                alt='Logo de Leonidas Esteban'
+                title='Logo de Leonidas Esteban'
                 width='40'
                 height='40'
-                alt='logito'
               />
             </figure>
             <p className='user-name'>DavidMarioLC</p>

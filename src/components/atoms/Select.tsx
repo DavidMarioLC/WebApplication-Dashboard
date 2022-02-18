@@ -30,9 +30,9 @@ export const Select = ({
     handlerChangeOption(option);
   };
 
-  useEffect(() => {
-    setItemSelect(defaultSelect);
-  }, [defaultSelect]);
+  // useEffect(() => {
+  //   setItemSelect(defaultSelect);
+  // }, [defaultSelect]);
 
   return (
     <StyledSelect onClick={showMenu}>

@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -38,9 +39,11 @@ const Courses = () => {
   const { stateCourses } = useAppState();
   const { courses, setCourses, course, setCourse } = stateCourses;
 
-  const coursesFiltered = courses.filter((course) =>
-    course.name.toLocaleLowerCase().includes(searchTerm)
-  );
+  const coursesFiltered = useMemo(() => {
+    return courses.filter((course) =>
+      course.name.toLocaleLowerCase().includes(searchTerm)
+    );
+  }, [courses, searchTerm]);
 
   const selectEditCourse = (id: string) => {
     const course = courses.find((course: TCourse) => course.id === id);

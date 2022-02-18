@@ -1,8 +1,7 @@
-import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { useAppState } from '../context/app-context';
-import { TClase } from '../types/types';
+
 import {
   Button,
   Input,

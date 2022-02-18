@@ -17,7 +17,7 @@ import {
 import { useAppState } from '../context/app-context';
 import { useNavigate } from 'react-router-dom';
 import { TCourse } from '../types/types';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import { usePreview } from '../hooks/usePreview';
 import { fieldsIsEmpty } from '../utils/validateFields';
 const FormCourses = () => {
