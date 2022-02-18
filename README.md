@@ -2,7 +2,7 @@
 <img width="120px"  src="https://raw.githubusercontent.com/no-te-rindas/logo/main/Logo/LeonidasEsteban-destello-envolvente-cuadrada.png" />
 </div>
 
-<h1 align="center">Health Store</h1>
+<h1 align="center">Dashboard Cursos</h1>
 <div align="center">
 <img width="600px"  src="https://raw.githubusercontent.com/DavidMarioLC/WebApplication-Dashboard/main/preview.webp" />
 </div>
